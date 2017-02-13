@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="test-values" author="v.ahafonava">
+        <comment>add test values into table films</comment>
+
+        <insert tableName="films">
+            <column name="name" type="character varying(32)" value="Fated to Love You" />
+            <column name="director" type="character varying" value="Lee Dong-yoon, Kim Hee-won" />
+            <column name="date" type="date" value="to_date('2014', 'YYYY')" />
+        </insert>
+
+        <insert tableName="films">
+            <column name="name" type="character varying(32)" value="The Prime Minister and I" />
+            <column name="director" type="character varying" value="Lee So-yeon" />
+            <column name="date" type="date" value="to_date('2013', 'YYYY')" />
+        </insert>
+
+        <insert tableName="films">
+            <column name="name" type="character varying(32)" value="Gu Family Book" />
+            <column name="director" type="character varying" value="Shin Woo-chul, Kim Jung-hyun" />
+            <column name="date" type="date" value="to_date('2013', 'YYYY')" />
+        </insert>
+
+        <insert tableName="films">
+            <column name="name" type="character varying(32)" value="Goong" />
+            <column name="director" type="character varying" value="Hwang In-Roe" />
+            <column name="date" type="date" value="to_date('2014', 'YYYY')" />
+        </insert>
+
+        <insert tableName="films">
+            <column name="name" type="character varying(32)" value="Moon Lovers: Scarlet Heart Ryeo" />
+            <column name="director" type="character varying" value="Kim Kyu-tae" />
+            <column name="date" type="date" value="to_date('2016', 'YYYY')" />
+        </insert>
+
+        <insert tableName="films">
+            <column name="name" type="character varying(32)" value="Gentlemen's Class" />
+            <column name="director" type="character varying" value="Shin Woo-chul" />
+            <column name="date" type="date" value="to_date('2012', 'YYYY')" />
+        </insert>
+
+        <rollback changeSetPath="0010-films.xml::create-constraints::v.ahafonava"/>
+    </changeSet>
+
+</databaseChangeLog>

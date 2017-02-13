@@ -1,0 +1,83 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Film">
+    <resultMap id="film" type="film">
+        <id property="id" column="film_id" javaType="long"/>
+        <result property="name" column="film_name" javaType="string"/>
+        <result property="date" column="film_date" javaType="java.time.LocalDate"/>
+        <result property="director" column="film_director" javaType="string"/>
+        <collection property="genres"  ofType="genre" javaType="list" resultMap="Genre.genre"
+            columnPrefix="genre_" />
+    </resultMap>
+
+    <sql id="sql">
+        SELECT
+            f.id AS film_id,
+            f.name AS film_name,
+            f.date AS film_date,
+            f.director AS film_director,
+            g.id AS genre_id,
+            g.name AS genre_name
+        FROM films f
+        LEFT JOIN films_genres fg ON f.id = fg.film_id
+        LEFT JOIN genres g ON g.id = fg.genre_id
+    </sql>
+
+    <!-- ============ CREATE ============ -->
+    <insert id="create" parameterType="film">
+        <selectKey keyProperty="id" resultType="long" order="BEFORE">
+            SELECT nextVal('films_id_seq') as id
+        </selectKey>
+
+        INSERT INTO films (ID, NAME, DATE, DIRECTOR)
+        VALUES (#{id}, #{name}, #{date}, #{director});
+    </insert>
+
+    <!-- ============= READ ============= -->
+    <select id="read" parameterType="long" resultMap="film">
+        <include refid="sql"/>
+        WHERE f.id = #{id}
+    </select>
+
+    <!-- ============ UPDATE ============ -->
+    <update id="update" parameterType="film">
+        UPDATE films
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="date != null">date = #{date},</if>
+            <if test="director != null">director = #{director}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <!-- ============ DELETE BY ID ============ -->
+    <delete id="delete" parameterType="long">
+        DELETE FROM films
+        WHERE id = #{id}
+    </delete>
+
+    <!-- ============ FIND ALL ============ -->
+    <select id="findAll" resultMap="film">
+        <include refid="sql"/>
+        ORDER BY f.name
+    </select>
+
+    <!-- ============ FIND BY NOT NULL FIELDS ============ -->
+    <select id="find" parameterType="film" resultMap="film">
+        SELECT * FROM films
+        <where>
+            <if test="name != null">
+                name LIKE '%${name}%'
+            </if>
+            <if test="genre != null">
+                OR genre LIKE '%${genre}%'
+            </if>
+            <if test="director != null">
+                OR director LIKE '%${director}%'
+            </if>
+            <if test="date != null">
+                OR date &gt;= #{date}
+            </if>
+        </where>
+    </select>
+</mapper>

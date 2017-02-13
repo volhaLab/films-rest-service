@@ -1,0 +1,20 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <typeAliases>
+        <typeAlias alias="film" type="com.epam.ahafonava.entity.Film" />
+        <typeAlias alias="genre" type="com.epam.ahafonava.entity.Genre" />
+    </typeAliases>
+
+    <typeHandlers>
+        <typeHandler handler="org.apache.ibatis.type.YearTypeHandler" />
+    </typeHandlers>
+
+    <mappers>
+        <mapper resource="com/epam/ahafonava/dao/Film.xml" />
+        <mapper resource="com/epam/ahafonava/dao/Genre.xml"/>
+    </mappers>
+
+</configuration>

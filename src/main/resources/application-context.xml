@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+    <context:property-placeholder location="classpath:/db.properties" />
+
+    <context:component-scan base-package="com.epam.ahafonava.rest" />
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbs.driver}" />
+        <property name="url" value="${jdbs.url}" />
+        <property name="username" value="${jdbs.username}" />
+        <property name="password" value="${jdbs.password}" />
+    </bean>
+
+    <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+        <property name="dataSource" ref="dataSource" />
+        <property name="changeLog" value="classpath:com/epam/ahafonava/database/db-master-changelog.xml" />
+        <property name="contexts" value="test, production" />
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="classpath:com/epam/ahafonava/dao/mybatis-config.xml" />
+    </bean>
+
+    <!-- DAO -->
+    <bean id="dao" abstract="true">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+
+    <bean id="filmDao" class="com.epam.ahafonava.dao.mybatis.FilmMybatisDao" parent="dao" />
+
+    <bean id="genreDao" class="com.epam.ahafonava.dao.mybatis.GenreMybatisDao" parent="dao" />
+
+    <!-- SERVICES -->
+    <bean id="filmService" class="com.epam.ahafonava.service.FilmServiceImpl">
+        <property name="filmdao" ref="filmDao" />
+        <property name="genredao" ref="genreDao" />
+    </bean>
+</beans>

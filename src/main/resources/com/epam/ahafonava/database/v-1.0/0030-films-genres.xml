@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="create-table" author="v.ahafonava">
+        <comment>create table films_genres</comment>
+
+        <createTable tableName="films_genres">
+            <column name="film_id" type="bigint" />
+            <column name="genre_id" type="bigint" />
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="films_genres" />
+        </rollback>
+    </changeSet>
+
+    <changeSet id="create-constraints" author="v.ahafonava">
+        <comment>add constraints for table films_genres</comment>
+        <addNotNullConstraint tableName="films_genres" columnName="film_id" />
+        <addNotNullConstraint tableName="films_genres" columnName="genre_id" />
+        <addForeignKeyConstraint constraintName="films_genres_gid_fk"
+            baseColumnNames="genre_id" baseTableName="films_genres"
+            referencedColumnNames="id" referencedTableName="genres" />
+        <addForeignKeyConstraint constraintName="films_genres_fid_fk"
+            baseColumnNames="film_id" baseTableName="films_genres"
+            referencedColumnNames="id" referencedTableName="films" />
+    </changeSet>
+
+</databaseChangeLog>

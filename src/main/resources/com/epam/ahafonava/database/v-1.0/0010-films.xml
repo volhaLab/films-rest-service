@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="create-table" author="v.ahafonava">
+        <comment>create table films</comment>
+
+        <createTable tableName="films">
+            <column name="id" type="bigserial" />
+            <column name="name" type="character varying(32)" />
+            <column name="director" type="character varying" />
+            <column name="date" type="date" />
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="films" />
+        </rollback>
+    </changeSet>
+
+    <changeSet id="create-constraints" author="v.ahafonava">
+        <comment>add constraints for table films</comment>
+        <addPrimaryKey tableName="films" columnNames="id" />
+        <addNotNullConstraint tableName="films" columnName="id" />
+        <addNotNullConstraint tableName="films" columnName="name" />
+        <addNotNullConstraint tableName="films" columnName="director" />
+        <addNotNullConstraint tableName="films" columnName="date" />
+    </changeSet>
+
+</databaseChangeLog>

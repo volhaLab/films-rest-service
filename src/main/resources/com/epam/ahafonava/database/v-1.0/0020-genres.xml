@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog 
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="create-table" author="v.ahafonava">
+        <comment>create table genres</comment>
+
+        <createTable tableName="genres">
+            <column name="id" type="bigserial" />
+            <column name="name" type="character varying(32)" />
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="genres" />
+        </rollback>
+    </changeSet>
+
+    <changeSet id="create-constraints" author="v.ahafonava">
+        <comment>add constraints for table genres</comment>
+        <addPrimaryKey tableName="genres" columnNames="id" />
+        <addNotNullConstraint tableName="genres" columnName="id" />
+        <addNotNullConstraint tableName="genres" columnName="name" />
+    </changeSet>
+
+</databaseChangeLog>
